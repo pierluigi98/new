@@ -1,0 +1,17 @@
+pack\Controller\SongController.class
+pack\Runnable\GenerateRandomSong.class
+pack\Runnable\RunnableGetList.class
+pack\Service\SongMongoService.class
+pack\Runnable\RunnablePostCreate.class
+pack\Component\SscStatusAuthenticationProvider$Userr.class
+pack\Runnable\RunnablePostCreate$1.class
+pack\Component\SscStatusAuthenticationProvider.class
+pack\Repository\SongRepository.class
+pack\Service\SongService.class
+pack\Runnable\RunnableFindAndModify.class
+pack\Runnable\GenerateCsv.class
+pack\Runnable\RunnableGetList$1.class
+pack\Configuration\SecurityConfig.class
+pack\Domain\Song.class
+pack\NewApplication.class
+pack\Domain\SongDTO.class
