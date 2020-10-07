@@ -42,11 +42,13 @@ public class SongController {
 
     @PutMapping("thread")
     public void thread(){
-
-        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+        int i=0;
+        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(20);
         RunnableFindAndModify runnableFindAndModify = new RunnableFindAndModify(songMongoService);
-        executorService.schedule(runnableFindAndModify,0, TimeUnit.SECONDS);
-
+        while (i<20) {
+            executorService.schedule(runnableFindAndModify, 0, TimeUnit.SECONDS);
+            i++;
+        }
     }
 
     @GetMapping("/query1/{category}")

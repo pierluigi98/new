@@ -17,10 +17,14 @@ public class RunnableFindAndModify implements Runnable {
 
     @Override
     public void run() {
+        System.out.println("NAME:"+Thread.currentThread().getName());
+
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(3));
         songMongoService.getMongoTemplate()
-                .findAndModify(query, BasicUpdate.update("quantity",90), SongDTO.class,"song");
+                .findAndModify(query, BasicUpdate.update("quantity",10), SongDTO.class,"song");
+
+        System.out.println("NAME:"+Thread.currentThread().getName());
 
     }
 }
