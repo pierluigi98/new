@@ -34,4 +34,12 @@ public class SongDTO {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    @Override
+    public String toString() {
+        return "SongDTO{" +
+                "id='" + id + '\'' +
+                ", quantity=" + quantity +
+                '}';
+    }
 }

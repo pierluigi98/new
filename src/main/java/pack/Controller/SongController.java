@@ -1,30 +1,15 @@
 package pack.Controller;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-import org.bson.Document;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.data.mongodb.core.query.BasicUpdate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.UpdateDefinition;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import pack.Domain.Song;
 import pack.Domain.SongDTO;
-import pack.NewApplication;
 import pack.Runnable.RunnableFindAndModify;
 import pack.Service.SongMongoService;
 import pack.Service.SongService;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -42,6 +27,7 @@ public class SongController {
 
     @PutMapping("thread")
     public void thread(){
+
         int i=0;
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(20);
         RunnableFindAndModify runnableFindAndModify = new RunnableFindAndModify(songMongoService);
@@ -49,6 +35,7 @@ public class SongController {
             executorService.schedule(runnableFindAndModify, 0, TimeUnit.SECONDS);
             i++;
         }
+        //count down latch
     }
 
     @GetMapping("/query1/{category}")
