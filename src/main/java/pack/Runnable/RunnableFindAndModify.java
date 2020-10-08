@@ -1,31 +1,38 @@
 package pack.Runnable;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.query.BasicUpdate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import pack.Domain.Song;
 import pack.Domain.SongDTO;
-import pack.Service.SongMongoService;
+import pack.Service.SongService;
+
+import java.util.concurrent.CountDownLatch;
 
 public class RunnableFindAndModify implements Runnable {
+    private SongService songService;
+    private CountDownLatch countDownLatch;
+    private CountDownLatch countDownLatch2;
+    private int q=5;
 
-    private SongMongoService songMongoService;
-    private static int q=0;
-
-    public RunnableFindAndModify(SongMongoService songMongoService) {
-        this.songMongoService = songMongoService;
+    public RunnableFindAndModify(SongService songService, CountDownLatch countDownLatch,CountDownLatch countDownLatch2) {
+        this.songService = songService;
+        this.countDownLatch = countDownLatch;
+        this.countDownLatch2 = countDownLatch2;
     }
 
     @Override
     public void run() {
 
-        //System.out.println("NAME:"+Thread.currentThread().getName());
-
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(3));
-        songMongoService.getMongoTemplate().findAndModify(query, BasicUpdate.update("quantity",q++),FindAndModifyOptions.options().returnNew(true),SongDTO.class,"song");
+        countDownLatch.countDown();
+        try {
+            countDownLatch.await();
+            songService.findAndModify(query, BasicUpdate.update("quantity",q),SongDTO.class,"song");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        countDownLatch2.countDown();
 
     }
 }

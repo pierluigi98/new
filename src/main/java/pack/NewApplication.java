@@ -1,33 +1,7 @@
 package pack;
-import com.mongodb.ClientSessionOptions;
-import com.mongodb.client.ClientSession;
-import com.mongodb.client.MongoDatabase;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.support.PersistenceExceptionTranslator;
-import org.springframework.data.mongodb.MongoDatabaseFactory;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.scheduling.annotation.Scheduled;
-import pack.Domain.Song;
-import pack.Runnable.GenerateCsv;
-import pack.Runnable.GenerateRandomSong;
-import pack.Runnable.RunnableGetList;
-import pack.Runnable.RunnablePostCreate;
-import pack.Service.SongMongoService;
-import pack.Service.SongService;
-
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 public class NewApplication{// implements CommandLineRunner {

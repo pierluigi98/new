@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.*;
 import pack.Domain.Song;
 import pack.Domain.SongDTO;
 import pack.Runnable.RunnableFindAndModify;
-import pack.Service.SongMongoService;
 import pack.Service.SongService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -18,34 +18,40 @@ import java.util.concurrent.TimeUnit;
 @RestController
 public class SongController {
     private SongService songService;
-    private SongMongoService songMongoService;
 
-    public SongController(SongService songService, SongMongoService songMongoService) {
+    public SongController(SongService songService) {
         this.songService = songService;
-        this.songMongoService = songMongoService;
     }
 
     @PutMapping("thread")
-    public void thread(){
+    public void thread() throws InterruptedException {
 
         int i=0;
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(20);
-        RunnableFindAndModify runnableFindAndModify = new RunnableFindAndModify(songMongoService);
-        while (i<20) {
-            executorService.schedule(runnableFindAndModify, 0, TimeUnit.SECONDS);
+
+        CountDownLatch countDownLatch = new CountDownLatch(20);
+        CountDownLatch countDownLatch2 = new CountDownLatch(20);
+
+         while (i<20) {
+            executorService.schedule(new RunnableFindAndModify(songService,countDownLatch,countDownLatch2), 0, TimeUnit.SECONDS);
             i++;
         }
-        //count down latch
+        try {
+            countDownLatch2.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @GetMapping("/query1/{category}")
     public List<SongDTO> query1(@PathVariable String category) {
-        return songMongoService.findByCategory(category);
+        return songService.findByCategory(category);
     }
 
     @GetMapping("/query2")
     public List<SongDTO> query2(@RequestParam("min") int min,@RequestParam("max") int max) {
-        return songMongoService.countSongByQuantity(min,max);
+        return songService.countSongByQuantity(min,max);
     }
 
     @PostMapping("/create")
